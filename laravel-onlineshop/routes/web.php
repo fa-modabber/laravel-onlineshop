@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -30,6 +31,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/resend-otp', [AuthController::class, 'resend_otp'])->name('auth.resend-otp');
 });
 
+Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
+
+
 Route::prefix('profile')->middleware('auth')->group(function () {
     Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/{user}', [ProfileController::class, 'update'])->name('profile.update');
@@ -40,8 +44,19 @@ Route::prefix('profile')->middleware('auth')->group(function () {
     Route::get('/addresses/{address}/edit', [ProfileController::class, 'address_edit'])->name('profile.addresses.edit');
     Route::put('/addresses/{address}', [ProfileController::class, 'address_update'])->name('profile.addresses.update');
     Route::get('/wishlist', [ProfileController::class, 'wishlist'])->name('profile.wishlist');
+    Route::get('/wishlist-remove', [ProfileController::class, 'remove_from_wishlist'])->name('profile.wishlist.remove');
+    Route::get('/wishlist-add-to', [ProfileController::class, 'wishlist_add_to'])->name('profile.wishlist.add');
 });
 
-Route::prefix('wishlist')->group(function () {
-    Route::get('/add-to', [ProfileController::class, 'wishlist_add_to'])->name('wishlist-add-to');
+
+Route::prefix('cart')->middleware('auth')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::get('/increment', [CartController::class, 'increment'])->name('cart.increment');
+    Route::get('/decrement', [CartController::class, 'decrement'])->name('cart.decrement');
+    Route::get('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::get('/remove', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/clear', [CartController::class, 'clear'])->name('cart.clear');
+    Route::post('/checkCoupon', [CartController::class, 'checkCoupon'])->name('cart.check-coupon');
 });
+
+

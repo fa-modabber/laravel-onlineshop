@@ -28,19 +28,29 @@
                             @endif
 
                             <p>{{ $product->description }}</p>
+                            @if ($product->is_available)
+                                <form x-data="{ quantity: 1 }" action="{{ route('cart.add', []) }}" class="mt-5 d-flex">
+                                    <button class="btn-add">افزودن به سبد خرید</button>
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <input type="hidden" name="qty" :value="quantity">
 
-                            <form x-data="{ quantity: 1 }" action="#" class="mt-5 d-flex">
-                                <button class="btn-add">افزودن به سبد خرید</button>
-                                <div class="input-counter ms-4">
-                                    <span @click="quantity++" class="plus-btn">
-                                        +
-                                    </span>
-                                    <div class="input-number" x-text="quantity"></div>
-                                    <span @click="quantity > 1 && quantity--" class="minus-btn">
-                                        -
-                                    </span>
-                                </div>
-                            </form>
+                                    <div class="input-counter ms-4">
+                                        <span @click="quantity < {{ $product->quantity }} && quantity++" class="plus-btn">
+                                            +
+                                        </span>
+                                        <div class="input-number" x-text="quantity"></div>
+                                        <span x-show="quantity == 1" @click="quantity == 1 && quantity--" class="minus-btn">
+                                            <i class="bi bi-trash fs-6"></i>
+                                        </span>
+                                        <span x-show="quantity > 1" @click="quantity > 1 && quantity--" class="minus-btn">
+                                            -
+                                        </span>
+                                        <span x-show="quantity == {{ $product->quantity }}">maximum</span>
+                                    </div>
+                                </form>
+                            @else
+                                <div class="text-danger">ناموجود</div>
+                            @endif
                         </div>
                         <div class="col-md-6">
                             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -122,10 +132,12 @@
                                                 </h5>
                                             @endif
                                             <div class="d-flex">
-                                                <a class="me-2" href="">
+                                                <a class="me-2"
+                                                    href="href="{{ route('cart.increment', ['product_id' => $product->id]) }}">
                                                     <i class="bi bi-cart-fill text-white fs-6"></i>
                                                 </a>
-                                                <a href="{{ route('wishlist-add-to' , ['product_id' => $randomProduct->id]) }}">
+                                                <a
+                                                    href="{{ route('profile.wishlist.add', ['product_id' => $randomProduct->id]) }}">
                                                     <i class="bi bi-heart-fill  text-white fs-6"></i>
                                                 </a>
                                             </div>

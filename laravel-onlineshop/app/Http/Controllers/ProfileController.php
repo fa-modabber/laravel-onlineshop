@@ -103,8 +103,8 @@ class ProfileController extends Controller
             'product_id' => 'required|integer|exists:products,id'
         ]);
 
-        if(!Auth::check()){
-        return redirect()->back()->with('warning', 'برای افزودن محصول به لیست علاقه مندی، باید وارد سیستم شوید');
+        if (!Auth::check()) {
+            return redirect()->back()->with('warning', 'برای افزودن محصول به لیست علاقه مندی، باید وارد سیستم شوید');
         }
 
         Wishlist::create([
@@ -114,8 +114,20 @@ class ProfileController extends Controller
         return redirect()->back()->with('success', ' محصول موردنظر با موفقیت به علاقه مندی ها افزوده شد');
     }
 
-    public function wishlist(){
+    public function wishlist()
+    {
         $wishlist = Auth::user()->wishlist;
         return view('profile.wishlist', compact('wishlist'));
+    }
+
+    public function remove_from_wishlist(Request $request)
+    {
+        $request->validate([
+            'wishlist' => 'required|integer|exists:wishlist,id'
+        ]);
+
+        $wishlist = Wishlist::findOrFail($request->wishlist);
+        $wishlist->delete();
+        return redirect()->back()->with('warning', ' محصول موردنظر با موفقیت از لیست علاقه مندی ها حذف شد');
     }
 }
