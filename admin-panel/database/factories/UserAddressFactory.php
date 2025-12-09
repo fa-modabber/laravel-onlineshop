@@ -24,13 +24,13 @@ class UserAddressFactory extends Factory
         return [
             'title' => $this->faker->word(),
             'address' => $this->faker->address(),
-            'cellphone' => $this->faker->numerify('09#########'), 
+            'cellphone' => $this->faker->numerify('09#########'),
             'postal_code' => $this->faker->numerify('#########'),
 
-            'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
+            'user_id' => User::inRandomOrder()->first()?->id,
 
-            'province_id' => Province::inRandomOrder()->first()?->id ?? Province::factory(),
-            'city_id' => City::inRandomOrder()->first()?->id ?? City::factory(),
+            'province_id' => Province::inRandomOrder()->first()?->id,
+            'city_id' => City::inRandomOrder()->first()?->id,
 
             'created_at' => now(),
             'updated_at' => now(),
