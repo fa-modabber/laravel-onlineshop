@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('col_2_body');
             $table->string('col_3_title');
             $table->string('col_3_body');
-            $table->string('social_media_1')->nullable();
-            $table->string('social_media_2')->nullable();
-            $table->string('social_media_3')->nullable();
-            $table->string('social_media_4')->nullable();
+            $table->string('telegram_link')->nullable();
+            $table->string('whatsapp_link')->nullable();
+            $table->string('instagram_link')->nullable();
+            $table->string('youtube_link')->nullable();
             $table->string('copyright');
             $table->timestamps();
         });

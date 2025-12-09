@@ -36,12 +36,29 @@
                           {{ $footer->col_2_title }}
                       </a>
                       <p> {{ $footer->col_2_body }} </p>
-                      <div class="footer_social">
-                          {!! $footer->social_media_1 !!}
-                          {!! $footer->social_media_2 !!}
-                          {!! $footer->social_media_3 !!}
-                          {!! $footer->social_media_4 !!}
-                      </div>
+
+                       <div class="footer_social">
+                        @if($footer->telegram_link !== null)
+                        <a href="{{ $footer->telegram_link }}">
+                            <i class="bi bi-telegram"></i>
+                        </a>
+                        @endif
+                        @if($footer->whatsapp_link !== null)
+                        <a href="{{ $footer->whatsapp_link }}">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                        @endif
+                        @if($footer->instagram_link !== null)
+                        <a href="{{ $footer->instagram_link }}">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                        @endif
+                        @if($footer->youtube_link !== null)
+                        <a href="{{ $footer->youtube_link }}">
+                            <i class="bi bi-youtube"></i>
+                        </a>
+                        @endif
+                    </div>
                   </div>
               </div>
               <div class="col-md-4 footer-col">
