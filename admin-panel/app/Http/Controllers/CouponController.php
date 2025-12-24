@@ -41,12 +41,15 @@ class CouponController extends Controller
         ]);
         return redirect()->route('coupons.index')->with('success', 'کد تخفیف با موفقیت ایجاد شد');
     }
+
     public function edit(Coupon $coupon)
     {
         return view('coupons.edit', compact('coupon'));
     }
+
     public function update(Request $request, Coupon $coupon)
     {
+
         try {
             $expired_at = $request->expired_at ? convert_jalali_to_gregorian_date($request->expired_at) : null;
         } catch (\Exception $e) {
@@ -56,11 +59,13 @@ class CouponController extends Controller
         $request->merge([
             'expired_at' => $expired_at,
         ]);
+
         $request->validate([
-            'code' => 'required|string|unique:coupons,code' . $coupon->id,
+            'code' => 'required|string|unique:coupons,code,' . $coupon->id,
             'percentage' => 'required|integer',
             'expired_at' => 'required|date_format:Y-m-d H:i:s'
         ]);
+
         $coupon->update([
             'code' => $request->code,
             'percentage' => $request->percentage,
@@ -68,6 +73,7 @@ class CouponController extends Controller
         ]);
         return redirect()->route('coupons.index')->with('success', 'کد تخفیف با موفقیت آپدیت شد');
     }
+
     public function destroy(Coupon $coupon)
     {
         $coupon->delete();

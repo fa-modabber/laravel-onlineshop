@@ -17,24 +17,11 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+
+    //scopes 
     public function scopeAvailable($query)
     {
         return $query->where('quantity', '>', 0)->where('status', 1);
-    }
-
-    public function getIsAvailableAttribute()
-    {
-        return ($this->quantity > 0) && ($this->status == 1);
-    }
-
-    public function getIsOnSaleAttribute()
-    {
-        return ($this->quantity > 0) && ($this->sale_price) && ($this->sale_date_from < Carbon::now()) && ($this->sale_date_to > Carbon::now());
-    }
-
-    public function getSalePercentAttribute()
-    {
-        return round((($this->price - $this->sale_price) / $this->price) * 100);
     }
 
     public function scopeSearch($query, $search)
@@ -85,4 +72,21 @@ class Product extends Model
         }
         return $query;
     }
+    
+    public function getIsAvailableAttribute()
+    {
+        return ($this->quantity > 0) && ($this->status == 1);
+    }
+
+    public function getIsOnSaleAttribute()
+    {
+        return ($this->quantity > 0) && ($this->sale_price) && ($this->sale_date_from < Carbon::now()) && ($this->sale_date_to > Carbon::now());
+    }
+
+    public function getSalePercentAttribute()
+    {
+        return round((($this->price - $this->sale_price) / $this->price) * 100);
+    }
+
+    
 }
